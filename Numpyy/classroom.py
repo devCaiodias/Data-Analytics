@@ -44,3 +44,11 @@ print(array_random)
 # Criando um array aleatorio com valores baseados em uma distribuição normal
 array_random_normal = np.random.normal(1,2,10)
 print(array_random_normal)
+
+# Execicio
+
+matriz_ex = np.linspace(5,11,16).reshape(4,4)
+print(matriz_ex)
+
+armazenamento = matriz_ex.itemsize * matriz_ex.size
+print("Armazenamento: ", armazenamento)
