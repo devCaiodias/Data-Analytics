@@ -61,3 +61,12 @@ exam_data = {
 }
 labels = list("abcde")
 print(pd.DataFrame(data=exam_data, index=labels))
+
+# Exercicio
+
+dados_covid = {
+    "Pais": ["Belgim", "Israel", "Chile", "Peru", "Argentina", "Espanha"],
+    "Covid": [39.152,  35.578,    27.55,   28.213,  26.593,   26.554]
+}
+indexx = list(range(6))
+print(pd.DataFrame(data=dados_covid, index=indexx))
