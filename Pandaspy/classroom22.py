@@ -38,7 +38,7 @@ for tp in df1["TP_DEPENDENCIA"].unique():
     index.append(tp)
     values.append(agg)
 
-# print(pd.Series(index=index, data=values, name="QT_DESKTOP_ALUNO")) 
+print(pd.Series(index=index, data=values, name="QT_DESKTOP_ALUNO")) 
 
 # Multiplas chaves
 
@@ -82,4 +82,16 @@ print(df1.groupby(["TP_REDE_LOCAL","TP_DEPENDENCIA"]).agg(
     QT_COMP_PORTATIL_ALUNO_Q3 = pd.NamedAgg("QT_COMP_PORTATIL_ALUNO", lambda x: x.quantile(0.75)),
     QT_COMP_PORTATIL_ALUNO_MAX = pd.NamedAgg("QT_COMP_PORTATIL_ALUNO", "max"),
 ))
+
+
+# Agrupamentos (Pivot Table)
+
+print(df1.pivot_table(
+    index=["TP_REDE_LOCAL","TP_DEPENDENCIA"],
+    columns=["IN_ALIMENTACAO","IN_EXAME_SELECAO"],
+    values=["QT_DESKTOP_ALUNO", "QT_COMP_PORTATIL_ALUNO"],
+    # aggfunc={"QT_DESKTOP_ALUNO" :"mean", "QT_COMP_PORTATIL_ALUNO": "median"}
+    aggfunc={"QT_DESKTOP_ALUNO" :"mean", "QT_COMP_PORTATIL_ALUNO": lambda x: x.max() - x.min()}
+))
+
 
