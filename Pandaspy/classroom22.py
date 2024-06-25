@@ -105,3 +105,73 @@ print((
     .groupby(["IN_EXAME_SELECAO"])["ID_ESCOLA"]
     .count()
 ))
+
+
+# DataFrames - Agrupamentos (MultiIndex)
+
+
+g = df1.groupby(["TP_REDE_LOCAL","TP_DEPENDENCIA"])[["QT_COMP_PORTATIL_ALUNO","QT_DESKTOP_ALUNO"]].apply(lambda x: x.max() - x.min())
+print(g.index)
+
+print(g.loc[("A CABO", "ESTADUAL")]) 
+print(g.iloc[3]) 
+
+for f, d in g.index:
+    print(f, d)
+
+# Resetar os indices
+
+print((
+    df1.groupby(["TP_REDE_LOCAL","TP_DEPENDENCIA"])[["QT_COMP_PORTATIL_ALUNO","QT_DESKTOP_ALUNO"]]
+    .apply(lambda x: x.max() - x.min())
+    .reset_index()
+))
+
+print(df1.pivot_table(
+    index=["TP_REDE_LOCAL","TP_DEPENDENCIA"],
+    columns=["IN_ALIMENTACAO","IN_EXAME_SELECAO"],
+    values=["QT_DESKTOP_ALUNO", "QT_COMP_PORTATIL_ALUNO"],
+    # aggfunc={"QT_DESKTOP_ALUNO" :"mean", "QT_COMP_PORTATIL_ALUNO": "median"}
+    aggfunc={"QT_DESKTOP_ALUNO" :"mean", "QT_COMP_PORTATIL_ALUNO": lambda x: x.max() - x.min()}
+).reset_index()
+)
+
+print(df1.pivot_table(
+    index=["TP_REDE_LOCAL","TP_DEPENDENCIA"],
+    columns=["IN_ALIMENTACAO","IN_EXAME_SELECAO"],
+    values=["QT_DESKTOP_ALUNO", "QT_COMP_PORTATIL_ALUNO"],
+    # aggfunc={"QT_DESKTOP_ALUNO" :"mean", "QT_COMP_PORTATIL_ALUNO": "median"}
+    aggfunc={"QT_DESKTOP_ALUNO" :"mean", "QT_COMP_PORTATIL_ALUNO": lambda x: x.max() - x.min()}
+).reset_index(col_level=2).columns 
+)
+
+# Remoção um dos Niveis
+
+print(df1.pivot_table(
+    index=["TP_REDE_LOCAL","TP_DEPENDENCIA"],
+    columns=["IN_ALIMENTACAO","IN_EXAME_SELECAO"],
+    values=["QT_DESKTOP_ALUNO", "QT_COMP_PORTATIL_ALUNO"],
+    # aggfunc={"QT_DESKTOP_ALUNO" :"mean", "QT_COMP_PORTATIL_ALUNO": "median"}
+    aggfunc={"QT_DESKTOP_ALUNO" :"mean", "QT_COMP_PORTATIL_ALUNO": lambda x: x.max() - x.min()}
+).reset_index(col_level=2).droplevel(0, axis=1)
+)
+
+# Renomea os indices 
+
+pv = df1.pivot_table(
+    index=["TP_REDE_LOCAL","TP_DEPENDENCIA"],
+    columns=["IN_ALIMENTACAO","IN_EXAME_SELECAO"],
+    values=["QT_DESKTOP_ALUNO", "QT_COMP_PORTATIL_ALUNO"],
+    # aggfunc={"QT_DESKTOP_ALUNO" :"mean", "QT_COMP_PORTATIL_ALUNO": "median"}
+    aggfunc={"QT_DESKTOP_ALUNO" :"mean", "QT_COMP_PORTATIL_ALUNO": lambda x: x.max() - x.min()}
+)
+
+# pv.rename(columns={("QT_COMP_PORTATIL_ALUNO", 0.0, 0.0 ): "QT0"})
+
+pv.columns = [
+    f"{metrica}_ALIM-{int(alim)}_EXAM-{int(selec)}" 
+    for metrica, alim, selec in pv.columns
+]
+
+print(pv.reset_index(inplace=True))
+print(pv)
