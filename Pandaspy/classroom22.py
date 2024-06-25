@@ -95,3 +95,13 @@ print(df1.pivot_table(
 ))
 
 
+# Agrupamentos (Nulos) IMPORTANTE
+
+print(df1["IN_EXAME_SELECAO"].value_counts())
+print(df1.groupby(["IN_EXAME_SELECAO"])["ID_ESCOLA"].count())
+
+print((
+    df1.assign(IN_EXAME_SELECAO= lambda f: f["IN_EXAME_SELECAO"].fillna(-1))
+    .groupby(["IN_EXAME_SELECAO"])["ID_ESCOLA"]
+    .count()
+))
