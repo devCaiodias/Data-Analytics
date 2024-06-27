@@ -112,14 +112,14 @@ print((
     )
 ))
 
-print(
-    (
-    df3.reindex(columns=["ID_ESCOLA", "ANO", "IDEB_AI", "IDEB_AF"])
-    .sort_values(by=["ID_ESCOLA", "ANO"])
-    .reset_index(drop=True)
-    .assign(IDEB_AI=lambda f: f.groupby(["ID_ESCOLA"])["IDEB_AI"].apply(lambda x: x.interpolate()))
-    )
-    )
+# print(
+#     (
+#     df3.reindex(columns=["ID_ESCOLA", "ANO", "IDEB_AI", "IDEB_AF"])
+#     .sort_values(by=["ID_ESCOLA", "ANO"])
+#     .reset_index(drop=True)
+#     .assign(IDEB_AI=lambda f: f.groupby(["ID_ESCOLA"])["IDEB_AI"].apply(lambda x: x.interpolate()))
+#     )
+#     )
 
 print(
     df3.loc[lambda f: f["ANO"] == 2021].count
